@@ -1,3 +1,7 @@
 .wrapper {
   height: 100%;
 }
+
+.clickableList {
+  margin-top: -1px;
+}
