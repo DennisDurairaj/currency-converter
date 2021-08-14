@@ -2,9 +2,9 @@
   "name": "currency-converter-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
-    "dev": "nodemon source/server.ts",
+    "dev": "nodemon src/server.ts --inspect",
     "build": "rm -rf build/ && prettier --write source/ && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
