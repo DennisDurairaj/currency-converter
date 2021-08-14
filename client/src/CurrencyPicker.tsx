@@ -1,12 +1,24 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Button, Box, List, ListItem, HStack, Text } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
-import CurrencyFlag from './CurrencyFlag';
+import React, { useEffect, useRef, useState } from 'react';
+import CustomCurrencyFlag from './CustomCurrencyFlag';
 
-interface Props {}
+interface Currency {
+  iso: string;
+  currency_name: string;
+  is_obsolete: boolean;
+}
+type Props = {
+  currencies: Currency[];
+  default: Currency;
+};
 
-const CurrencyPicker = (props: Props) => {
+const CurrencyPicker: React.FC<Props> = (props) => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(
+    props.default
+  );
+
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
@@ -24,49 +36,54 @@ const CurrencyPicker = (props: Props) => {
   function toggleDropdown(event: React.MouseEvent<HTMLButtonElement>) {
     setIsOpened((prev) => !prev);
   }
+
+  function selectCurrency(currency: Currency) {
+    setSelectedCurrency(currency);
+    setIsOpened((prev) => !prev);
+  }
   return (
     <Box ref={ref} minW={{ base: '120px' }} maxW={{ base: '100px' }} p="2">
-      <Button onClick={toggleDropdown} variant="outline" className="currencySelectButton">
-        <CurrencyFlag countryCode="US" />
-        <span>&nbsp;USD</span>
-        <ChevronDownIcon />
+      <Button
+        w="100px"
+        p="4px"
+        onClick={toggleDropdown}
+        variant="outline"
+        className="currencySelectButton"
+      >
+        <HStack spacing="0" alignItems="center">
+          <CustomCurrencyFlag countryCode={selectedCurrency.iso} />
+          <span>&nbsp;{selectedCurrency.iso}</span>
+          <ChevronDownIcon />
+        </HStack>
       </Button>
       {isOpened && (
-        <Box p="3" minW={{ base: '150px' }} boxShadow="md" borderWidth="1px" borderRadius="md" className="clickableList">
+        <Box
+          p="3"
+          minW={{ base: '200px' }}
+          boxShadow="md"
+          borderWidth="1px"
+          borderRadius="md"
+          className="clickableList"
+        >
           <List spacing={4}>
-            <ListItem>
-              <HStack>
-                <CurrencyFlag countryCode="US" />
-                <div>
-                  <div>USD</div>
-                  <Text fontSize="xs" color="gray.500">
-                    US dollar
-                  </Text>
-                </div>
-              </HStack>
-            </ListItem>
-            <ListItem>
-              <HStack>
-                <CurrencyFlag countryCode="PL" />
-                <div>
-                  <div>PLN</div>
-                  <Text fontSize="xs" color="gray.500">
-                    Polish Zloty
-                  </Text>
-                </div>
-              </HStack>
-            </ListItem>
-            <ListItem>
-              <HStack>
-                <CurrencyFlag countryCode="EU" />
-                <div>
-                  <div>EUR</div>
-                  <Text fontSize="xs" color="gray.500">
-                    Euro
-                  </Text>
-                </div>
-              </HStack>
-            </ListItem>
+            {props.currencies.map((currency) => {
+              return (
+                <ListItem
+                  onClick={() => selectCurrency(currency)}
+                  key={currency.iso}
+                >
+                  <HStack alignItems="center">
+                    <CustomCurrencyFlag countryCode={currency.iso} />
+                    <div>
+                      <div>{currency.iso}</div>
+                      <Text fontSize="xs" color="gray.500">
+                        {currency.currency_name}
+                      </Text>
+                    </div>
+                  </HStack>
+                </ListItem>
+              );
+            })}
           </List>
         </Box>
       )}
