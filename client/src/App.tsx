@@ -1,4 +1,3 @@
-import { ArrowDownIcon } from '@chakra-ui/icons';
 import { Flex, Heading } from '@chakra-ui/react';
 import './App.css';
 import CurrencyConverter from './features/CurrencyConverter/CurrencyConverter';

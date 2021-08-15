@@ -7,6 +7,7 @@ import {
   StatLabel,
   StatNumber,
   Flex,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
@@ -33,6 +34,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
     watch,
     formState: { errors },
   } = useForm<Inputs>({
+    mode: 'onChange',
     defaultValues: {
       amount: '1',
       currencyFrom: 'EUR',
@@ -43,7 +45,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
   const watchAmount = watch('amount');
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    console.log(data, errors);
     conversionQuery.refetch();
   };
 
@@ -66,7 +68,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
   );
 
   const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.target.value.length === 0) {
+    if (e.target.value.length === 0 || /\d/.test(e.target.value) === false) {
       return '0';
     }
     setValue('amount', format(e.target.value).toLocaleString());
@@ -106,10 +108,38 @@ const CurrencyConverter: React.FC<Props> = (props) => {
           <Controller
             control={control}
             name="amount"
+            rules={{
+              required: {
+                value: true,
+                message: 'Please enter an amount',
+              },
+              maxLength: {
+                value: 15,
+                message: 'Amount should be less than 100,000,000,000',
+              },
+              pattern: {
+                value: /\d/,
+                message: 'Please enter a valid number',
+              },
+            }}
             render={({ field }) => (
-              <Input {...field} onBlur={onBlurHandler} autoComplete="off" />
+              <>
+                <Input
+                  maxLength={15}
+                  isInvalid={errors.amount && true}
+                  errorBorderColor="red.300"
+                  {...field}
+                  onBlur={onBlurHandler}
+                  autoComplete="off"
+                />
+              </>
             )}
           />
+          {errors.amount && (
+            <Text color="red.300" overflowWrap="anywhere" fontSize="sm">
+              {errors.amount.message}
+            </Text>
+          )}
         </Box>
         <Flex
           wrap="wrap"
@@ -131,7 +161,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
                 {format(conversionQuery.data.amount).toLocaleString()}{' '}
                 {conversionQuery.data.from} =
               </StatLabel>
-              <StatNumber color="green.400">
+              <StatNumber overflowWrap="anywhere" color="green.400">
                 {format(conversionQuery.data.mid.toFixed(4)).toLocaleString()}{' '}
                 {conversionQuery.data.to}
               </StatNumber>
