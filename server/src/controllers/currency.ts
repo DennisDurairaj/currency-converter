@@ -6,6 +6,24 @@ interface Currency {
   currency_name: string;
   is_obsolete: boolean;
 }
+interface Rate {
+  quotecurrency: string;
+  mid: number;
+}
+interface ConvertFromResponse {
+  terms: string;
+  privacy: string;
+  from: string;
+  amount: number;
+  timestamp: string;
+  to: Rate[];
+}
+
+interface ConvertFromRequest {
+  from: string;
+  to: string;
+  amount: number;
+}
 
 // getting all currencies
 const getAllCurrencies = async (
@@ -875,4 +893,26 @@ const getAllCurrencies = async (
   });
 };
 
-export default { getAllCurrencies };
+const convertFrom = async (
+  req: Request<{}, {}, {}, ConvertFromRequest>,
+  res: Response
+) => {
+  const { from, to, amount } = req.query;
+
+  let convert_from = {
+    terms: "http://www.xe.com/legal/dfs.php",
+    privacy: "http://www.xe.com/privacy.php",
+    from: "USD",
+    amount: 10.0,
+    timestamp: "2021-08-15T00:00:00Z",
+    to: [
+      {
+        quotecurrency: "EUR",
+        mid: 8.477348178,
+      },
+    ],
+  };
+  return res.status(200).json(convert_from);
+};
+
+export default { getAllCurrencies, convertFrom };
