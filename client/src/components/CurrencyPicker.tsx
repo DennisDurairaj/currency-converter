@@ -1,6 +1,17 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Button, Box, List, ListItem, HStack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  List,
+  ListItem,
+  HStack,
+  Text,
+  Input,
+  InputGroup,
+  InputRightElement,
+  InputLeftAddon,
+} from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
+import { Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import CustomCurrencyFlag from './CustomCurrencyFlag';
 
 interface Currency {
@@ -10,14 +21,30 @@ interface Currency {
 }
 type Props = {
   currencies: Currency[];
-  default: Currency;
+  defaultCurrency: Currency;
+  label: Path<Inputs>;
+  register: UseFormRegister<Inputs>;
+  required: boolean;
+  setValue: UseFormSetValue<Inputs>;
 };
 
-const CurrencyPicker: React.FC<Props> = (props) => {
+interface Inputs {
+  currencyFrom: string;
+  currencyTo: string;
+  amount: string;
+}
+
+const CurrencyPicker: React.FC<Props> = ({
+  currencies,
+  defaultCurrency,
+  label,
+  register,
+  required,
+  setValue,
+}) => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(
-    props.default
-  );
+  const [selectedCurrency, setSelectedCurrency] =
+    useState<Currency>(defaultCurrency);
 
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
 
@@ -33,40 +60,39 @@ const CurrencyPicker: React.FC<Props> = (props) => {
     };
   });
 
-  function toggleDropdown(event: React.MouseEvent<HTMLButtonElement>) {
+  function toggleDropdown(event: React.MouseEvent<HTMLInputElement>) {
     setIsOpened((prev) => !prev);
   }
 
   function selectCurrency(currency: Currency) {
+    setValue(label, currency.iso);
     setSelectedCurrency(currency);
     setIsOpened((prev) => !prev);
   }
   return (
-    <Box ref={ref} minW={{ base: '120px' }} maxW={{ base: '100px' }} p="2">
-      <Button
-        w="100px"
-        p="4px"
-        onClick={toggleDropdown}
-        variant="outline"
-        className="currencySelectButton"
-      >
-        <HStack spacing="0" alignItems="center">
-          <CustomCurrencyFlag countryCode={selectedCurrency.iso} />
-          <span>&nbsp;{selectedCurrency.iso}</span>
-          <ChevronDownIcon />
-        </HStack>
-      </Button>
+    <Box ref={ref}>
+      <InputGroup>
+        <InputLeftAddon
+          children={<CustomCurrencyFlag countryCode={selectedCurrency.iso} />}
+        />
+        <Input
+          {...register(label, { required })}
+          isReadOnly
+          onClick={toggleDropdown}
+          value={selectedCurrency.iso}
+        />
+        <InputRightElement children={<ChevronDownIcon color="gray.500" />} />
+      </InputGroup>
       {isOpened && (
         <Box
           p="3"
-          minW={{ base: '200px' }}
           boxShadow="md"
           borderWidth="1px"
           borderRadius="md"
           className="clickableList"
         >
-          <List spacing={4}>
-            {props.currencies.map((currency) => {
+          <List w="100%" spacing={4}>
+            {currencies.map((currency) => {
               return (
                 <ListItem
                   onClick={() => selectCurrency(currency)}
