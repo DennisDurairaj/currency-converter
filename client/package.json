@@ -53,5 +53,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:6060"
+  "proxy": "http://localhost:6060",
+  "devDependencies": {
+    "@welldone-software/why-did-you-render": "^6.2.0"
+  }
 }
