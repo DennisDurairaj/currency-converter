@@ -117,4 +117,4 @@ const CurrencyPicker: React.FC<Props> = ({
   );
 };
 
-export default CurrencyPicker;
+export default React.memo(CurrencyPicker);

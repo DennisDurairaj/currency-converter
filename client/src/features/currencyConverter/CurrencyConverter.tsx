@@ -21,6 +21,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
     control,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
@@ -29,6 +30,9 @@ const CurrencyConverter: React.FC<Props> = (props) => {
       currencyTo: 'USD',
     },
   });
+
+  const watchAmount = watch('amount');
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     conversionQuery.refetch();
@@ -98,12 +102,12 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             control={control}
             name="amount"
             render={({ field }) => (
-              <Input autoComplete="false" {...field} onBlur={onBlurHandler} />
+              <Input {...field} onBlur={onBlurHandler} autoComplete="off" />
             )}
           />
         </Box>
         <Button
-          disabled={getValues().amount.length === 0}
+          disabled={watchAmount.length === 0}
           type="submit"
           colorScheme="blue"
         >
