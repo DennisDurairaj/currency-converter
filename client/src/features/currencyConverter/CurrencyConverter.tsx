@@ -8,6 +8,7 @@ import {
   StatNumber,
   Flex,
   Text,
+  Heading,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
@@ -78,98 +79,108 @@ const CurrencyConverter: React.FC<Props> = (props) => {
     return <p>Loading...</p>;
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack align="stretch" spacing={8}>
-        <CurrencyPicker
-          currencies={currenciesQuery.data.currencies}
-          defaultCurrency={{
-            iso: 'EUR',
-            currency_name: 'Euro',
-            is_obsolete: false,
-          }}
-          label="currencyFrom"
-          register={register}
-          required
-          setValue={setValue}
-        />
-        <CurrencyPicker
-          currencies={currenciesQuery.data.currencies}
-          defaultCurrency={{
-            iso: 'USD',
-            currency_name: 'US dollar',
-            is_obsolete: false,
-          }}
-          label="currencyTo"
-          register={register}
-          required
-          setValue={setValue}
-        />
-        <Box>
-          <Controller
-            control={control}
-            name="amount"
-            rules={{
-              required: {
-                value: true,
-                message: 'Please enter an amount',
-              },
-              maxLength: {
-                value: 15,
-                message: 'Amount should be less than 100,000,000,000',
-              },
-              pattern: {
-                value: /\d/,
-                message: 'Please enter a valid number',
-              },
+    <Flex direction="column" align="center" h="100%" justify="center">
+      <Heading
+        className="heading"
+        fontSize={['36px', '48px']}
+        as="h1"
+        flexGrow={0.2}
+      >
+        Currency Converter
+      </Heading>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <VStack align="stretch" spacing={8}>
+          <CurrencyPicker
+            currencies={currenciesQuery.data.currencies}
+            defaultCurrency={{
+              iso: 'EUR',
+              currency_name: 'Euro',
+              is_obsolete: false,
             }}
-            render={({ field }) => (
-              <>
-                <Input
-                  maxLength={15}
-                  isInvalid={errors.amount && true}
-                  errorBorderColor="red.300"
-                  {...field}
-                  onBlur={onBlurHandler}
-                  autoComplete="off"
-                />
-              </>
-            )}
+            label="currencyFrom"
+            register={register}
+            required
+            setValue={setValue}
           />
-          {errors.amount && (
-            <Text color="red.300" overflowWrap="anywhere" fontSize="sm">
-              {errors.amount.message}
-            </Text>
-          )}
-        </Box>
-        <Flex
-          wrap="wrap"
-          alignItems="center"
-          justify="space-between"
-          alignSelf="flex-start"
-          w="100%"
-        >
-          <Button
-            disabled={watchAmount.length === 0}
-            type="submit"
-            colorScheme="blue"
+          <CurrencyPicker
+            currencies={currenciesQuery.data.currencies}
+            defaultCurrency={{
+              iso: 'USD',
+              currency_name: 'US dollar',
+              is_obsolete: false,
+            }}
+            label="currencyTo"
+            register={register}
+            required
+            setValue={setValue}
+          />
+          <Box>
+            <Controller
+              control={control}
+              name="amount"
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Please enter an amount',
+                },
+                maxLength: {
+                  value: 15,
+                  message: 'Amount should be less than 100,000,000,000',
+                },
+                pattern: {
+                  value: /\d/,
+                  message: 'Please enter a valid number',
+                },
+              }}
+              render={({ field }) => (
+                <>
+                  <Input
+                    maxLength={15}
+                    isInvalid={errors.amount && true}
+                    errorBorderColor="red.300"
+                    {...field}
+                    onBlur={onBlurHandler}
+                    autoComplete="off"
+                  />
+                </>
+              )}
+            />
+            {errors.amount && (
+              <Text color="red.300" overflowWrap="anywhere" fontSize="sm">
+                {errors.amount.message}
+              </Text>
+            )}
+          </Box>
+          <Flex
+            wrap="wrap"
+            alignItems="center"
+            justify="space-between"
+            alignSelf="flex-start"
+            w="100%"
           >
-            Convert
-          </Button>
-          {conversionQuery.data && (
-            <Stat p="2">
-              <StatLabel color="gray.500">
-                {format(conversionQuery.data.amount).toLocaleString()}{' '}
-                {conversionQuery.data.from} =
-              </StatLabel>
-              <StatNumber overflowWrap="anywhere" color="green.400">
-                {format(conversionQuery.data.mid.toFixed(4)).toLocaleString()}{' '}
-                {conversionQuery.data.to}
-              </StatNumber>
-            </Stat>
-          )}
-        </Flex>
-      </VStack>
-    </form>
+            <Button
+              disabled={watchAmount.length === 0}
+              type="submit"
+              colorScheme="blue"
+            >
+              Convert
+            </Button>
+            {conversionQuery.data && (
+              <Stat p="2">
+                <StatLabel color="gray.500">
+                  {format(conversionQuery.data.amount).toLocaleString()}{' '}
+                  {conversionQuery.data.from} =
+                </StatLabel>
+                <StatNumber overflowWrap="anywhere" color="green.400">
+                  {format(conversionQuery.data.mid.toFixed(4)).toLocaleString()}{' '}
+                  {conversionQuery.data.to}
+                </StatNumber>
+              </Stat>
+            )}
+          </Flex>
+        </VStack>
+      </form>
+    </Flex>
   );
 };
 
