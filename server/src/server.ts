@@ -1,6 +1,7 @@
 import http from "http";
 import express, { Express } from "express";
 import morgan from "morgan";
+import cors from "cors";
 import routes from "./routes/currency";
 
 const router: Express = express();
@@ -8,6 +9,11 @@ const router: Express = express();
 router.use(morgan("dev"));
 router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
+router.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 router.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
