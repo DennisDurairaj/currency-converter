@@ -898,7 +898,6 @@ const convertFrom = async (
   res: Response
 ) => {
   const { from, to, amount } = req.query;
-
   let convert_from = {
     terms: "http://www.xe.com/legal/dfs.php",
     privacy: "http://www.xe.com/privacy.php",
@@ -912,7 +911,12 @@ const convertFrom = async (
       },
     ],
   };
-  return res.status(200).json(convert_from);
+  return res.status(200).json({
+    amount,
+    from,
+    to,
+    mid: convert_from.to[0].mid,
+  });
 };
 
 export default { getAllCurrencies, convertFrom };

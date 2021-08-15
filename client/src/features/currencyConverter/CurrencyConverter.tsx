@@ -1,4 +1,13 @@
-import { Box, Button, VStack, Input } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  VStack,
+  Input,
+  Stat,
+  StatLabel,
+  StatNumber,
+  Flex,
+} from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
 import CurrencyPicker from '../../components/CurrencyPicker';
@@ -43,12 +52,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
   });
 
   const conversionQuery = useQuery(
-    [
-      'conversion',
-      getValues().currencyFrom,
-      getValues().currencyTo,
-      getValues().amount,
-    ],
+    ['conversion'],
     () =>
       convert(
         getValues().currencyFrom,
@@ -57,6 +61,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
       ),
     {
       enabled: false,
+      keepPreviousData: true,
     }
   );
 
@@ -72,7 +77,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing={8}>
+      <VStack align="stretch" spacing={8}>
         <CurrencyPicker
           currencies={currenciesQuery.data.currencies}
           defaultCurrency={{
@@ -97,7 +102,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
           required
           setValue={setValue}
         />
-        <Box w="100%">
+        <Box>
           <Controller
             control={control}
             name="amount"
@@ -106,13 +111,33 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             )}
           />
         </Box>
-        <Button
-          disabled={watchAmount.length === 0}
-          type="submit"
-          colorScheme="blue"
+        <Flex
+          wrap="wrap"
+          alignItems="center"
+          justify="space-between"
+          alignSelf="flex-start"
+          w="100%"
         >
-          Convert
-        </Button>
+          <Button
+            disabled={watchAmount.length === 0}
+            type="submit"
+            colorScheme="blue"
+          >
+            Convert
+          </Button>
+          {conversionQuery.data && (
+            <Stat p="2">
+              <StatLabel color="gray.500">
+                {format(conversionQuery.data.amount).toLocaleString()}{' '}
+                {conversionQuery.data.from} =
+              </StatLabel>
+              <StatNumber color="green.400">
+                {format(conversionQuery.data.mid.toFixed(4)).toLocaleString()}{' '}
+                {conversionQuery.data.to}
+              </StatNumber>
+            </Stat>
+          )}
+        </Flex>
       </VStack>
     </form>
   );
