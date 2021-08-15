@@ -9,6 +9,8 @@ import {
   Flex,
   Text,
   Heading,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
@@ -79,41 +81,62 @@ const CurrencyConverter: React.FC<Props> = (props) => {
     return <p>Loading...</p>;
   }
   return (
-    <Flex direction="column" align="center" h="100%" justify="center">
+    <Flex
+      direction="column"
+      align="center"
+      h="100%"
+      justify={['start', 'center']}
+    >
       <Heading
         className="heading"
-        fontSize={['36px', '48px']}
+        fontSize={['30px', null, '50px']}
         as="h1"
-        flexGrow={0.2}
+        height={['80px']}
+        whiteSpace="nowrap"
       >
         Currency Converter
       </Heading>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        p="20px"
+        borderRadius="10px"
+        boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+        maxWidth={['400px', '600px']}
+        width="100%"
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <VStack align="stretch" spacing={8}>
-          <CurrencyPicker
-            currencies={currenciesQuery.data.currencies}
-            defaultCurrency={{
-              iso: 'EUR',
-              currency_name: 'Euro',
-              is_obsolete: false,
-            }}
-            label="currencyFrom"
-            register={register}
-            required
-            setValue={setValue}
-          />
-          <CurrencyPicker
-            currencies={currenciesQuery.data.currencies}
-            defaultCurrency={{
-              iso: 'USD',
-              currency_name: 'US dollar',
-              is_obsolete: false,
-            }}
-            label="currencyTo"
-            register={register}
-            required
-            setValue={setValue}
-          />
+          <FormControl>
+            <FormLabel>From</FormLabel>
+            <CurrencyPicker
+              currencies={currenciesQuery.data.currencies}
+              defaultCurrency={{
+                iso: 'EUR',
+                currency_name: 'Euro',
+                is_obsolete: false,
+              }}
+              label="currencyFrom"
+              register={register}
+              required
+              setValue={setValue}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>To</FormLabel>
+            <CurrencyPicker
+              currencies={currenciesQuery.data.currencies}
+              defaultCurrency={{
+                iso: 'USD',
+                currency_name: 'US dollar',
+                is_obsolete: false,
+              }}
+              label="currencyTo"
+              register={register}
+              required
+              setValue={setValue}
+            />
+          </FormControl>
+
           <Box>
             <Controller
               control={control}
@@ -133,16 +156,17 @@ const CurrencyConverter: React.FC<Props> = (props) => {
                 },
               }}
               render={({ field }) => (
-                <>
+                <FormControl>
+                  <FormLabel>Amount</FormLabel>
                   <Input
-                    maxLength={15}
+                    maxLength={12}
                     isInvalid={errors.amount && true}
                     errorBorderColor="red.300"
                     {...field}
                     onBlur={onBlurHandler}
                     autoComplete="off"
                   />
-                </>
+                </FormControl>
               )}
             />
             {errors.amount && (
@@ -159,7 +183,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             w="100%"
           >
             <Button
-              disabled={watchAmount.length === 0}
+              disabled={watchAmount.length === 0 || parseInt(watchAmount) === 0}
               type="submit"
               colorScheme="blue"
             >
@@ -179,7 +203,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             )}
           </Flex>
         </VStack>
-      </form>
+      </Box>
     </Flex>
   );
 };
