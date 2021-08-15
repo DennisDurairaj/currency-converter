@@ -5,12 +5,17 @@ import App from './App';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import '@fontsource/space-grotesk';
 
 const queryClient = new QueryClient();
 
 const theme = extendTheme({
   shadows: {
     outline: 'none',
+  },
+  fonts: {
+    heading: 'Space Grotesk',
+    body: 'Space Grotesk',
   },
 });
 

@@ -1,10 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import currencyConverterReducer from './features/currencyConverter/currencyConverterSlice';
 // ...
 
 export const store = configureStore({
   reducer: {
-    currencies: currencyConverterReducer,
+    // currencies: currencyConverterReducer,
   },
 });
 
