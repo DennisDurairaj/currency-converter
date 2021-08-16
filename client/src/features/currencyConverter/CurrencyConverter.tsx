@@ -6,7 +6,6 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  Flex,
   Text,
   Heading,
   FormControl,
@@ -14,20 +13,19 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
-import CurrencyPicker from '../../components/CurrencyPicker';
+import CurrencyPicker from '../../components/CurrencyPicker/CurrencyPicker';
 import { convert, getAllCurrencies } from './currencyConverterApi';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { format } from '../../helpers';
-
-interface Props {}
-
+import styles from './CurrencyConverter.module.css';
+import clsx from 'clsx';
 interface Inputs {
   currencyFrom: string;
   currencyTo: string;
   amount: string;
 }
 
-const CurrencyConverter: React.FC<Props> = (props) => {
+const CurrencyConverter: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -80,34 +78,26 @@ const CurrencyConverter: React.FC<Props> = (props) => {
   if (currenciesQuery.isLoading === true) {
     return <p>Loading...</p>;
   }
+
   return (
-    <Flex
-      direction="column"
-      align="center"
-      h="100%"
-      justify={['start', 'center']}
+    <Box
+      as="main"
+      justifyContent={['start', 'center']}
+      className={styles.container}
     >
-      <Heading
-        className="heading"
-        fontSize={['30px', null, '50px']}
-        as="h1"
-        height={['80px']}
-        whiteSpace="nowrap"
-      >
+      <Heading className={styles.heading} as="h1">
         Currency Converter
       </Heading>
-      <Box
-        p="20px"
-        borderRadius="10px"
-        boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-        maxWidth={['400px', '600px']}
-        width="100%"
-        as="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <VStack align="stretch" spacing={8}>
+      <Box className={styles.form} as="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box className={styles.conversionContainer} as="div">
           <FormControl>
-            <FormLabel>From</FormLabel>
+            <FormLabel
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              From
+            </FormLabel>
             <CurrencyPicker
               currencies={currenciesQuery.data.currencies}
               defaultCurrency={{
@@ -122,7 +112,13 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>To</FormLabel>
+            <FormLabel
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              To
+            </FormLabel>
             <CurrencyPicker
               currencies={currenciesQuery.data.currencies}
               defaultCurrency={{
@@ -137,7 +133,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             />
           </FormControl>
 
-          <Box>
+          <Box className={styles.amountInput}>
             <Controller
               control={control}
               name="amount"
@@ -175,13 +171,7 @@ const CurrencyConverter: React.FC<Props> = (props) => {
               </Text>
             )}
           </Box>
-          <Flex
-            wrap="wrap"
-            alignItems="center"
-            justify="space-between"
-            alignSelf="flex-start"
-            w="100%"
-          >
+          <Box as="div" className={styles.submitResult}>
             <Button
               disabled={watchAmount.length === 0 || parseInt(watchAmount) === 0}
               type="submit"
@@ -189,8 +179,12 @@ const CurrencyConverter: React.FC<Props> = (props) => {
             >
               Convert
             </Button>
-            {conversionQuery.data && (
-              <Stat p="2">
+            {conversionQuery.isFetched && (
+              <Stat
+                className={clsx(styles.conversionResultData, {
+                  [styles.fadeIn]: conversionQuery.isFetched,
+                })}
+              >
                 <StatLabel color="gray.500">
                   {format(conversionQuery.data.amount).toLocaleString()}{' '}
                   {conversionQuery.data.from} =
@@ -201,10 +195,10 @@ const CurrencyConverter: React.FC<Props> = (props) => {
                 </StatNumber>
               </Stat>
             )}
-          </Flex>
-        </VStack>
+          </Box>
+        </Box>
       </Box>
-    </Flex>
+    </Box>
   );
 };
 

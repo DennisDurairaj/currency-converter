@@ -10,9 +10,11 @@ import {
   InputRightElement,
   InputLeftAddon,
 } from '@chakra-ui/react';
+import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import CustomCurrencyFlag from './CustomCurrencyFlag';
+import CustomCurrencyFlag from '../CustomCurrencyFlag';
+import styles from './CurrencyPicker.module.css';
 
 interface Currency {
   iso: string;
@@ -42,7 +44,7 @@ const CurrencyPicker: React.FC<Props> = ({
   required,
   setValue,
 }) => {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [isOpened, setIsOpened] = useState<boolean | null>(null);
   const [selectedCurrency, setSelectedCurrency] =
     useState<Currency>(defaultCurrency);
 
@@ -83,15 +85,18 @@ const CurrencyPicker: React.FC<Props> = ({
         />
         <InputRightElement children={<ChevronDownIcon color="gray.500" />} />
       </InputGroup>
-      {isOpened && (
+      {isOpened !== null && (
         <Box
           p="3"
           boxShadow="md"
           borderWidth="1px"
           borderRadius="md"
-          className="clickableList"
+          className={clsx(styles.currencyList, {
+            [styles.fadeIn]: isOpened,
+            [styles.fadeOut]: !isOpened,
+          })}
         >
-          <List w="100%" spacing={4}>
+          <List spacing={4}>
             {currencies.map((currency) => {
               return (
                 <ListItem

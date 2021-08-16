@@ -1,0 +1,51 @@
+.currencyList {
+  cursor: pointer;
+  margin-top: 6px;
+  max-height: 500px;
+  overflow-y: scroll;
+  position: absolute;
+  background-color: #fff;
+  z-index: 10;
+  max-width: 400px;
+  width: 100%;
+}
+
+.fadeIn {
+  animation: fadeIn 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+.fadeOut {
+  animation: fadeOut 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateZ(-80px);
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: translateZ(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    transform: translateZ(-800px);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media screen and (min-width: 30em) {
+  .currencyList {
+    max-width: 600px;
+  }
+}
