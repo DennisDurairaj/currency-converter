@@ -1,8 +1,12 @@
 import http from "http";
+import path from "path";
 import express, { Express } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import routes from "./routes/currency";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+const swaggerDoc = YAML.load(path.join(__dirname, "/swagger.yaml"));
 
 const router: Express = express();
 
@@ -29,6 +33,7 @@ router.use((req, res, next) => {
 });
 
 router.use("/", routes);
+router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 router.use((req, res, next) => {
   const error = new Error("not found");

@@ -1,0 +1,72 @@
+openapi: "3.0.0"
+info:
+  title: "Currency Converter API"
+  version: "1.0.0"
+  description: "Backend API for Currency Converter App"
+paths:
+  /currencies:
+    get:
+      tags:
+        - Currency Information
+      summary: Access a list of all available currencies.
+      description: This endpoint returns a list of all currencies, active and obsolete, available via the XE Currency Data Feed API.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/definitions/Currency"
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+  /convert:
+    get:
+      tags:
+        - Currency Information
+      summary: Convert from one currency to another currency
+      description: This endpoint returns the base currency, converted currency and amount in converted currency
+      parameters:
+        - name: from
+          in: query
+          required: true
+          type: string
+        - name: to
+          in: query
+          required: true
+          type: string
+        - name: amount
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/CurrencyConversionResponse"
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+definitions:
+  Currency:
+    properties:
+      iso:
+        type: string
+      currency_name:
+        type: string
+  CurrencyConversionResponse:
+    properties:
+      from:
+        type: string
+      to:
+        type: string
+      amount:
+        type: number
+      mid:
+        type: number
