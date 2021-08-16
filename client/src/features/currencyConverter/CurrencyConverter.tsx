@@ -85,9 +85,9 @@ const CurrencyConverter: React.FC = () => {
       justifyContent={['start', 'center']}
       className={styles.container}
     >
-      <Heading className={styles.heading} as="h1">
+      <Box className={styles.heading} as="h1">
         Currency Converter
-      </Heading>
+      </Box>
       <Box className={styles.form} as="form" onSubmit={handleSubmit(onSubmit)}>
         <Box className={styles.conversionContainer} as="div">
           <FormControl>

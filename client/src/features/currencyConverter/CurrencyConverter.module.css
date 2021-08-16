@@ -7,9 +7,11 @@
 }
 
 .heading {
-  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  color: rgb(46, 46, 46);
+  text-shadow: 2px 1px 3px rgb(0 0 0 / 20%);
   height: 80px;
   font-size: 30px;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -19,6 +21,7 @@
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   max-width: 400px;
   width: 100%;
+  background-color: #fff;
 }
 
 .conversionContainer {
@@ -67,6 +70,10 @@
     justify-content: center;
   }
 
+  .heading {
+    font-size: 36px;
+  }
+
   .form {
     max-width: 600px;
   }
@@ -81,6 +88,10 @@
 
   .conversionContainer > * {
     flex: 1 1 28%;
+  }
+
+  .heading {
+    font-size: 40px;
   }
 
   .form {
