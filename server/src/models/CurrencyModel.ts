@@ -22,3 +22,9 @@ export interface ConvertFromRequest {
   to: string;
   amount: number;
 }
+
+export interface CurrenciesResponse {
+  terms: string;
+  privacy: string;
+  currencies: Currency[];
+}

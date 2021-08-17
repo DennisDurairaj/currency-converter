@@ -213,9 +213,4 @@ const CurrencyConverter: React.FC = () => {
   );
 };
 
-CurrencyConverter.whyDidYouRender = {
-  logOnDifferentValues: true,
-  customName: 'CurrencyConverter',
-};
-
 export default CurrencyConverter;

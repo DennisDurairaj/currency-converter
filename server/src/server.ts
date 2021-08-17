@@ -5,10 +5,15 @@ import morgan from "morgan";
 import cors from "cors";
 import routes from "./routes/currency";
 import swaggerUi from "swagger-ui-express";
-import YAML from "yamljs";
-const swaggerDoc = YAML.load(path.join(__dirname, "/swagger.yaml"));
+import * as swaggerDoc from "./swagger.json";
+import axios from "axios";
+require("dotenv").config();
 
 const router: Express = express();
+axios.defaults.auth = {
+  username: process.env.xeuser as string,
+  password: process.env.xepassword as string,
+};
 
 router.use(morgan("dev"));
 router.use(express.urlencoded({ extended: false }));

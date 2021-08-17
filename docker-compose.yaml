@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  backend:
+    env_file: "./server/.env"
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile.prod
+    image: "dennisdurairaj/currency-converter-backend"
+    ports:
+      - "6060:6060"
+  frontend:
+    env_file: "./client/.env.prod"
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    image: "dennisdurairaj/currency-converter-frontend"
+    ports:
+      - "3000:80"
+    links:
+      - "backend:be"
