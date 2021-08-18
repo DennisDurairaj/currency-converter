@@ -84,7 +84,7 @@ const CurrencyConverter: React.FC = () => {
         <Spinner size="xl" />
       ) : (
         <>
-          <Box className={styles.heading} as="h1">
+          <Box data-cy="header" className={styles.heading} as="h1">
             Currency Converter
           </Box>
           <Box
