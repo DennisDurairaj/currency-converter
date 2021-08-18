@@ -93,7 +93,7 @@ const CurrencyConverter: React.FC = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <Box className={styles.conversionContainer} as="div">
-              <FormControl>
+              <FormControl data-cy="currencyFromInput">
                 <FormLabel
                   onClick={(e) => {
                     e.preventDefault();
@@ -114,7 +114,7 @@ const CurrencyConverter: React.FC = () => {
                   setValue={setValue}
                 />
               </FormControl>
-              <FormControl>
+              <FormControl data-cy="currencyToInput">
                 <FormLabel
                   onClick={(e) => {
                     e.preventDefault();
@@ -123,6 +123,7 @@ const CurrencyConverter: React.FC = () => {
                   To
                 </FormLabel>
                 <CurrencyPicker
+                  data-cy="to-currency"
                   currencies={currenciesQuery.data.currencies}
                   defaultCurrency={{
                     iso: 'USD',
@@ -176,6 +177,7 @@ const CurrencyConverter: React.FC = () => {
               </Box>
               <Box as="div" className={styles.submitResult}>
                 <Button
+                  data-cy="submit"
                   disabled={
                     watchAmount.length === 0 || parseInt(watchAmount) === 0
                   }
@@ -186,6 +188,7 @@ const CurrencyConverter: React.FC = () => {
                 </Button>
                 {conversionQuery.isFetched && (
                   <Stat
+                    data-cy="result"
                     className={clsx(styles.conversionResultData, {
                       [styles.fadeIn]: conversionQuery.isFetched,
                     })}
