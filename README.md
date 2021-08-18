@@ -47,3 +47,7 @@ From the root directory run
 npm start
 ```
 This starts up the dev servers for both the client and the server using `npm-run-all` and automatically opens up the application in your default browser. (Does not support IE)
+
+## Swagger API Docs
+
+Accessible at the URL http://localhost:6060/api-docs/ once the application is running.
