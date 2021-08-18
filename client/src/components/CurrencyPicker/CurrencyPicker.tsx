@@ -80,6 +80,7 @@ const CurrencyPicker: React.FC<Props> = ({
         <Input
           {...register(label, { required })}
           isReadOnly
+          cursor="pointer"
           onClick={toggleDropdown}
           value={selectedCurrency.iso}
         />
