@@ -1,4 +1,3 @@
-// @ts-ignore
 describe('Currency Converter Component', () => {
   before(() => {
     cy.visit('http://localhost:3000');
