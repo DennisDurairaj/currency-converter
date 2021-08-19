@@ -11,6 +11,7 @@ npm install
 This script installs all the dependencies for the client and server so you don't have to run `npm install` for each service separately.
 
 ### Setting env variables
+
 Normally env variables such as api keys and basic auth credentials are stored in secrets within continuous integration platforms.
 
 Since I haven't implemented continuous integration in this project, we need to update the env variables in the server.
@@ -25,6 +26,7 @@ xepassword=YOUR_XE_PASSWORD
 ## Running the application
 
 There are two ways to run the application in your local environment.
+
 - Using Docker
 - Using `webpack-dev-server` in `react-scripts` and local server for backend
 
@@ -32,10 +34,12 @@ There are two ways to run the application in your local environment.
 
 Make sure you have [Docker](https://www.docker.com/get-started) installed.
 
-From the root directory run 
+From the root directory run
+
 ```
 docker-compose up -d
 ```
+
 This will build the docker images based on the configurations in the `docker-compose.yaml` file.
 
 Navigate to `localhost:3000` to access the application. Note that the application runs in production mode when run using this method.
@@ -43,16 +47,29 @@ Navigate to `localhost:3000` to access the application. Note that the applicatio
 ### Using regular `npm` scripts
 
 From the root directory run
+
 ```
 npm start
 ```
+
 This starts up the dev servers for both the client and the server using `npm-run-all` and automatically opens up the application in your default browser. (Does not support IE)
 
 ## Swagger API Docs
 
 Accessible at the URL http://localhost:6060/api-docs/ once the application is running.
 
+## Running Cypress tests
+
+In order to run the Cypress tests, navigate to the `./client` folder and in the terminal run the command
+
+```
+npm run cypress:open
+```
+
+This opens up the Cypress test runner where you can run the integration tests.
+
 ## Future updates
+
 - Search box input for selecting currencies
 - Better header design
 - Ability to swap currencies
