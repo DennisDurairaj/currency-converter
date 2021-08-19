@@ -51,3 +51,8 @@ This starts up the dev servers for both the client and the server using `npm-run
 ## Swagger API Docs
 
 Accessible at the URL http://localhost:6060/api-docs/ once the application is running.
+
+## Future updates
+- Search box input for selecting currencies
+- Better header design
+- Ability to swap currencies
